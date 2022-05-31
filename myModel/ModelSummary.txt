@@ -1,0 +1,18 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ keras_layer (KerasLayer)    (None, 2048)              23561152  
+                                                                 
+ dense (Dense)               (None, 100)               204900    
+                                                                 
+ batch_normalization (BatchN  (None, 100)              400       
+ ormalization)                                                   
+                                                                 
+ activation (Activation)     (None, 100)               0         
+                                                                 
+=================================================================
+Total params: 23,766,452
+Trainable params: 205,100
+Non-trainable params: 23,561,352
+_________________________________________________________________

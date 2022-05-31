@@ -1,0 +1,1 @@
+loss : 1.1509066820144653Valuation accuracy : 0.7124000191688538False Negatives : 226.0
