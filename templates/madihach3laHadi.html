@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/customcss.css">
+</head>
+<body>
+
+<div class="text-bg-primary p-3 text-center">
+    <h1>Prédiction de l'image !</h1>
+</div>
+
+<div class="container p-3">
+    <div class="row">
+        <div class="container col-xl   p-3">
+            <div style="width:fit-content;height: 45%;" class="container p-3 rounded-3 bg-white shadow-lg">
+                <!-- show image -->
+                <h3 class="m-4">Voici l'image que t'as pris</h3>
+                <img class="img-fluid mx-auto my-5 rounded d-block w-75"
+                     src="..\images\2018-11-06t054310z-1334124005-rc1be15a8050-rtrmadp-3-people-sexiest-man.jpg" alt="img to predict" >
+
+                <hr class="my-4 m-3">
+                <!-- for cropped images + Labels -->
+                <h3 class="m-4">Voici le nom des objets et êtres vivants dans l'image ! </h3>
+                <div class="carousel slide mx-auto my-5 w-50 shadow" id="carouselExampleIndicators"  data-bs-ride="true">
+                    <div class="carousel-indicators" > <!-- a iterer -->
+                        {% for label in lebel_list %}
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ loop.index}}" class="active" aria-current="true" aria-label="Slide 1"></button>
+
+                        {% endfor %}
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner"> <!-- a iterer -->
+                        <div class="carousel-item active">
+                            <img src="https://source.unsplash.com/random/100x80?sig=1" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-sm-block">
+                                <h5>label</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://source.unsplash.com/random/100x80?sig=2" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-sm-block">
+                                <h5>label</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://source.unsplash.com/random/100x80?sig=3" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-sm-block">
+                                <h5>label</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </a>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="container col-xl-3 p-3 ">
+            <div style="height: 45%;" class="container p-3 rounded-start bg-white text-center shadow-lg overflow-auto    ">
+                <h5 class="m-5">Pour plus d'information</h5>
+                <hr class="my-4">
+                <script async src="https://cse.google.com/cse.js?cx=c85cbc0e39850e71b"></script>
+                <div class="gcse-searchresults-only" style="height: 100px;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

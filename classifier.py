@@ -12,16 +12,22 @@ def predictionFunction(prediction):
     classLabels = "beaver, dolphin, otter, seal, whale, aquarium fish, flatfish, ray, shark, trout, orchids, poppies, roses, sunflowers, tulips, containers	bottles, bowls, cans, cups, plates, apples, mushrooms, oranges, pears, sweet peppers, clock, computer keyboard, lamp, telephone, television, bed, chair, couch, table, wardrobe, bee, beetle, butterfly, caterpillar, cockroach, bear, leopard, lion, tiger, wolf, bridge, castle, house, road, skyscraper, cloud, forest, mountain, plain, sea, camel, cattle, chimpanzee, elephant, kangaroo, fox, porcupine, possum, raccoon, skunk, crab, lobster, snail, spider, worm, baby, boy, girl, man, woman, crocodile, dinosaur, lizard, snake, turtle, hamster, mouse, rabbit, shrew, squirrel, maple, oak, palm, pine, willow, bicycle, bus, motorcycle, pickup truck, train, lawn-mower, rocket, streetcar, tank, tractor"
     LABELS = classLabels.split(", ")
     LABELS.sort()
-    print("the labels list of len :", len(LABELS))
-    print(LABELS)
+    # print("the labels list of len :", len(LABELS))
+    # print(LABELS)
     maxIndex = getMaxIndexList(prediction)
     labelPrediction = LABELS[maxIndex]
     return labelPrediction
 
 
 
-def classifier(cropped_img_list) :
-    # Image preprocessing:
+def classifier(cropped_img_name_list) :
+    #read Images-----------------------------------------------------------------------
+    base_image_path = "static/images/croppedImageDirectory/"
+    cropped_img_list = []
+    for name in cropped_img_name_list:
+        read_image = cv2.imread(base_image_path+name)
+        cropped_img_list.append(read_image)
+    # Image preprocessing:-------------------------------------------------------------
     classifier_input_images = []
     for im in cropped_img_list :
         #resizing
@@ -30,12 +36,11 @@ def classifier(cropped_img_list) :
         #scaling
         im = im/255
         classifier_input_images.append(im)
-    len(classifier_input_images)
     # Classifier:
-    ### Load a classifie:
+    ### Load a classifie:-------------------------------------------------------------
     model = keras.models.load_model("./myModel/final_save")
     # model.summary()
-    ### Classification:
+    ### Classification:---------------------------------------------------------------
     prediction_list = []
     for img in classifier_input_images :
         prediction  = model.predict(img)
@@ -45,5 +50,5 @@ def classifier(cropped_img_list) :
         predicted_label = predictionFunction(prediction)
         label_list.append(predicted_label)
     print(label_list)
-    return label_list
-
+    return cropped_img_name_list,label_list
+    #---------------------------------------------------------------------------------

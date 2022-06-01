@@ -1,7 +1,7 @@
-import classifier
-import detect 
+from classifier import classifier
+from detect  import detect
 
-def pediction(image_path):
-    cropped_images = detect.detect(image_path)
-    label_prediction = classifier.classifier(cropped_images)
-    return label_prediction
+def getPediction(image_path):
+    cropped_images_names = detect(image_path)
+    cropped_images_name_list,label_prediction = classifier(cropped_images_names)
+    return cropped_images_name_list,label_prediction
