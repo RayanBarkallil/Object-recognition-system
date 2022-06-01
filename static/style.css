@@ -16,7 +16,7 @@ body, html {
   background-repeat:no-repeat;
   background-attachment:fixed;
   background-size:cover;
-  -webkit-filter:blur(4px);
+  -webkit-filter:blur(2px);
   -moz-filter:blur(10px);I
 }
 
