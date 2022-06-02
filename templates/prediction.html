@@ -21,10 +21,10 @@
     <div class="container p-3">
         <div class="row ">
             <div class="container col-xxl p-3">
-                <div style="width:100%;height: 115em;" class="container p-3 rounded-3 bg-white shadow-lg">
-                    <div class="text-bg-white shadow rounded p-3 text-center">
-                        <h1>Prédiction de l'image !</h1>
-                    </div>
+                <div class="container bg-white text-bg-white shadow rounded p-3 text-center my-3">
+                    <h1>Prédiction de l'image !</h1>
+                </div>
+                <div style="width:100%" class="container p-3 rounded-3 bg-white shadow-lg">
                     <!-- show image -->
                     <h3 class="m-4">Voici l'image que t'as pris</h3>
                     <img class="img-fluid mx-auto my-5 rounded d-block w-75"
@@ -55,7 +55,7 @@
                                 <div class="carousel-item {{ activeState }}">
                                     <img src="{{ url_for('static', filename='images/croppedImageDirectory/'+imageName )}}"
                                          class="d-block w-100"  alt="...">
-                                    <div class="carousel-caption d-none d-sm-block labelBox rounded">
+                                    <div class="carousel-caption d-none d-sm-block labelBox rounded p-3">
                                         <div class="grid w-75 mx-auto">
                                             <div class="row">
                                                 <h5 class="d-inline col-sm">{{ Label }}</h5>
@@ -86,8 +86,8 @@
                     </div>
                 </div>
             </div>
-            <div class="container col-xxl-3 p-3 ">
-                <div style="height: 115em;" class="container p-3 rounded-start bg-white text-center shadow-lg overflow-auto    ">
+            <div class="container col-xxl-3 p-3 my-3">
+                <div style="height: 100em;" class=" container p-3 rounded-start bg-white text-center shadow-lg overflow-auto    ">
                     <h5 class="m-5">Pour plus d'information</h5>
                     <hr class="my-4">
                     <script async src="https://cse.google.com/cse.js?cx=c85cbc0e39850e71b"></script>

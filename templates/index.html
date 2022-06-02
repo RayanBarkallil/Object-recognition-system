@@ -6,19 +6,36 @@
     <link href="static/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="bg-image"></div>
-<div class="form-center">
-    <div class="container bg-white rounded p-5 bg-opacity-50">
-        <form class="text-center " action="/", method="post" enctype="multipart/form-data">
-            <div class="card-body ">
-                <h1 class="text-center text-dark"><b>Image Classifier</b></h1>
-                <hr>
-                <p class="text-dark" >Entrer l'image de l'object que vous voulez savoir son nom ou prenez une photo et vous aurez son nom !</p>
-                <input class="form-control" type="file" name="imagefile">
-                <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
-            </div>
-        </form>
-    </div>
+    <div class="bg-image"></div>
+
+    <form class="form-center text-center bg-white bg-opacity-75 rounded p-5" action="/", method="post" enctype="multipart/form-data">
+        <div class="card-body ">
+            <h1 class="text-center text-dark"><b>Image Classifier</b></h1>
+            <hr>
+            <p class="text-dark" >Entrer l'image de l'object que vous voulez savoir son nom ou prenez une photo et vous aurez son nom !</p>
+            <input class="form-control" type="file" name="imagefile">
+            <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
+        </div>
+    </form>
+
+
+
+
+
+<!--    <div class="form-center container">-->
+<!--&lt;!&ndash;        <div class="container  bg-white rounded p-5 bg-opacity-50">&ndash;&gt;-->
+<!--            <form class="text-center card p-3 w-100" action="/", method="post" enctype="multipart/form-data">-->
+<!--                <div class="card-body ">-->
+<!--                    <h1 class="text-center text-dark"><b>Image Classifier</b></h1>-->
+<!--                    <hr>-->
+<!--                    <p class="text-dark" >Entrer l'image de l'object que vous voulez savoir son nom ou prenez une photo et vous aurez son nom !</p>-->
+<!--                    <input class="form-control" type="file" name="imagefile">-->
+<!--                    <input class="btn btn-primary mt-3" type="submit" value="Predict Image">-->
+<!--                </div>-->
+<!--            </form>-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--    </div>-->
+
 </body>
 </html>
 
