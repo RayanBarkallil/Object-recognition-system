@@ -1,3 +1,8 @@
 body{
     background-color: rgb(196, 237, 255);
+    background-image:url("3_withBlur.jpg");
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-size:cover;
 }

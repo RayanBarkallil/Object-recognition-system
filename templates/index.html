@@ -3,18 +3,23 @@
 <head>
     <title>webapp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href="../static/style.css" rel="stylesheet">
+    <link href="static/style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="bg-image"></div>
-    <div class="form-center">
-        <form class="p-3 text-center" action="/", method="post" enctype="multipart/form-data">
-            <h1 class="text-center">Image Classifier</h1>
-            <input class="form-control" type="file" name="imagefile">
-            <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
+<div class="bg-image"></div>
+<div class="form-center">
+    <div class="container bg-white rounded p-5 bg-opacity-50">
+        <form class="text-center " action="/", method="post" enctype="multipart/form-data">
+            <div class="card-body ">
+                <h1 class="text-center text-dark"><b>Image Classifier</b></h1>
+                <hr>
+                <p class="text-dark" >Entrer l'image de l'object que vous voulez savoir son nom ou prenez une photo et vous aurez son nom !</p>
+                <input class="form-control" type="file" name="imagefile">
+                <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
+            </div>
         </form>
     </div>
+</div>
 </body>
 </html>
-
 
