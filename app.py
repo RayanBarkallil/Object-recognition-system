@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session,redirect, url_for,jsonify
 from flask_restful import Api, Resource
 from prediction import getPediction
+import collections
 
 
 app = Flask(__name__)
@@ -28,12 +29,14 @@ def doThings():
     cropped_img_name_list,label_list = getPediction(image_path)
 
     #info dictionary for template filling ------------------------------------------------------------------
-    croppedImageList_andLabels = {}
+    croppedImageList_andLabels = collections.OrderedDict()
     for i in range(len(cropped_img_name_list)) :
+        print(cropped_img_name_list[i]," et ",label_list[i])
         croppedImageList_andLabels[cropped_img_name_list[i]] = label_list[i]
-
+    print(croppedImageList_andLabels)
     #session to pass variables to other fun ----------------------------------------------------------------
     session['croppedImageList_andLabels'] = croppedImageList_andLabels
+
     session['image_name'] = defaultFilename
 
     return redirect(url_for('showPredictions')+"?q="+label_list[0])
@@ -41,6 +44,8 @@ def doThings():
 
 @app.route('/prediction',methods=['GET'])
 def showPredictions():
+    # od = collections.OrderedDict(sorted(session['croppedImageList_andLabels'].items()))
+    print(session['croppedImageList_andLabels'])
     return render_template("prediction.html",
                            baseImage = session['image_name'],
                            croppedImageList_andLabels = session['croppedImageList_andLabels'])

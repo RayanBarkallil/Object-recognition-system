@@ -1,7 +1,41 @@
 import cv2
+from math import sqrt,pow
+class Point:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
 
-def eleminateRedondantRect(listOfRectangles):
-    #todo eleminate redondant rectangles
+    def distanceFrom(self,point):
+        X = self.x-point.x
+        Y = self.y-point.y
+        return sqrt(pow(X,2)+pow(Y,2))
+
+
+def eleminateRedondantRect(listOfRectangles,tolerancePixel,w_tolerance,h_tolerance): #todo eleminate redondant rectangles
+    resultList = [listOfRectangles[0]]
+
+    for (ex,ey,ew,eh) in listOfRectangles[1:] :
+        centerOfMass = Point((ex+ew)/2,(ey+eh)/2)
+        centerOfMassCondition = True
+        for (tmp_ex,tmp_ey,tmp_ew,tmp_eh) in resultList:
+            #compare center of gravity
+            tmp_centerOfMass = Point((tmp_ex+tmp_ew)/2,(tmp_ey+tmp_eh)/2)
+            if centerOfMass.distanceFrom(tmp_centerOfMass) > tolerancePixel :
+                continue
+            else :
+                #check width & height
+                if ew-tmp_ew > w_tolerance or eh-tmp_eh > h_tolerance :
+                    resultList.append((ex,ey,ew,eh))
+                    break
+                else :
+                    centerOfMassCondition = False
+                    continue
+        if centerOfMassCondition == True :
+            resultList.append((ex,ey,ew,eh))
+    print(resultList)
+    return resultList
+
+
     return None
 
 
@@ -57,19 +91,30 @@ def detect(image_path):
             big_list_of_rectangles.append((ex,ey,ew,eh))
 
     #elemination process
-    final_rectangle_list = eleminateRedondantRect(big_list_of_rectangles)
+    tolerance_pixel_value = 50
+    w_tolerance = 50
+    h_tolerance = 50
+    final_rectangle_list = eleminateRedondantRect(big_list_of_rectangles,
+                                                  tolerance_pixel_value,
+                                                  w_tolerance,
+                                                  h_tolerance)
     #-------------------------------------------------------------------------------------
 
 
     #on coupe l'image selon le rectangle:
     #--------------------------------- cropping the images -------------------------------
-    for cascade_output in haar_list_outputs :
-        for (ex,ey,ew,eh) in cascade_output:
-            #draw renctangles
-    #         cv2.rectangle(img,(ex,ey),(ex+ew,ey+eh),(0,255,0),5)
-            #cropping
-            cropped_img = img[ey:ey+eh,ex:ex+ew]
-            cropped_img_list.append(cropped_img)
+    # for cascade_output in haar_list_outputs :
+    #     for (ex,ey,ew,eh) in cascade_output:
+    #         #draw renctangles
+    # #         cv2.rectangle(img,(ex,ey),(ex+ew,ey+eh),(0,255,0),5)
+    #         #cropping
+    #         cropped_img = img[ey:ey+eh,ex:ex+ew]
+    #         cropped_img_list.append(cropped_img)
+
+    for (ex,ey,ew,eh) in final_rectangle_list :
+        #cropping
+        cropped_img = img[ey:ey+eh,ex:ex+ew]
+        cropped_img_list.append(cropped_img)
     #-------------------------------------------------------------------------------------
 
     #on les sauvegarde dans le images/croppedImageDirectory

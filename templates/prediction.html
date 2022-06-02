@@ -11,17 +11,20 @@
             color: #fff;
         }
     </style>
+    <script src="https://kit.fontawesome.com/67a5e2021d.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='prediction_main.js' )}}"></script>
+
 </head>
 <body>
-
-    <div class="text-bg-primary p-3 text-center">
-        <h1>Prédiction de l'image !</h1>
-    </div>
 
     <div class="container p-3">
         <div class="row">
             <div class="container col-xxl   p-3">
                 <div style="width:100%;" class="container p-3 rounded-3 bg-white shadow-lg">
+                    <div class="text-bg-white shadow rounded p-3 text-center">
+                        <h1>Prédiction de l'image !</h1>
+                    </div>
                     <!-- show image -->
                     <h3 class="m-4">Voici l'image que t'as pris</h3>
                     <img class="img-fluid mx-auto my-5 rounded d-block w-75"
@@ -53,8 +56,22 @@
                                     <img src="{{ url_for('static', filename='images/croppedImageDirectory/'+imageName )}}"
                                          class="d-block w-100"  alt="...">
                                     <div class="carousel-caption d-none d-sm-block labelBox rounded">
-                                        <h5>{{ Label }}</h5>
+                                        <div class="grid w-75 mx-auto">
+                                            <div class="row">
+                                                <h5 class="d-inline col-sm">{{ Label }}</h5>
+                                                <div class="d-inline col-sm-1">
+                                                    <button class=" p-1 rounded-circle text-bg-warning" id="soundButton{{loop.index}}" type="button">
+                                                        <i class="fa-solid fa-volume-high" ></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    {% set list1 = imageName.split('.') %}
+                                    <audio id="{{loop.index}}" class="d-none" controls >
+                                        <source src="{{ url_for('static', filename='sounds/'+ list1[0] + '.mp3')}}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
                                 </div>
                             {% endfor %}
                         </div>
@@ -79,8 +96,6 @@
             </div>
         </div>
     </div>
-    
-
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
