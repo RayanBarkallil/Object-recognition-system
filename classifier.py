@@ -20,7 +20,8 @@ def predictionFunction(prediction):
 
 
 
-def classifier(cropped_img_name_list,og_bounding_of_cropped_dict,model = None) :
+def classifier(cropped_img_name_list,og_bounding_of_cropped_dict,model = None,api = False) :
+    print("[CLASSIFICATION]")
     print("[INFO] classifier input params : ")
     print("[INFO] - cropped_img_name_list :",cropped_img_name_list)
     print("[INFO] - og_bounding_of_cropped_dict :",og_bounding_of_cropped_dict)
@@ -48,20 +49,24 @@ def classifier(cropped_img_name_list,og_bounding_of_cropped_dict,model = None) :
     for img in classifier_input_images :
         prediction  = model.predict(img)
         prediction_list.append(prediction)
+
+
     label_list = []
     bounding_for_each_label = {}
     for i,prediction in enumerate(prediction_list):
         predicted_label = predictionFunction(prediction)
         label_list.append(predicted_label)
-        try :
-            bounding_for_each_label[predicted_label].append(
-                og_bounding_of_cropped_dict[cropped_img_name_list[i]]
-            )
-        except :
-            bounding_for_each_label[predicted_label] = []
-            bounding_for_each_label[predicted_label].append(
-                og_bounding_of_cropped_dict[cropped_img_name_list[i]]
-            )
+        if api :
+            try :
+                bounding_for_each_label[predicted_label].append(
+                    og_bounding_of_cropped_dict[cropped_img_name_list[i]]
+                )
+            except :
+                bounding_for_each_label[predicted_label] = []
+                bounding_for_each_label[predicted_label].append(
+                    og_bounding_of_cropped_dict[cropped_img_name_list[i]]
+                )
     print("[INFO] label_list: ",label_list)
+    print("---------------------------------------------------------------------------")
     return cropped_img_name_list,label_list,bounding_for_each_label
     #---------------------------------------------------------------------------------

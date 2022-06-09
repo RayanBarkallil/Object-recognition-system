@@ -38,6 +38,7 @@ def eleminateRedondantRect(listOfRectangles,tolerancePixel,w_tolerance,h_toleran
 
 
 def detect(image_path):
+    print("[DETECTION]")
     #charger l'image et la redimentionner
     img_og = cv2.imread(image_path)
     H,W = img_og.shape[0],img_og.shape[1]
@@ -126,4 +127,5 @@ def detect(image_path):
     print("[INFO] cropped_image_name_list : ",cropped_image_name_list)
     print("[INFO] og_bounding_of_cropped_dict : ",og_bounding_of_cropped_dict)
     #-------------------------------------------------------------------------------------
+    print("-------------------------------------------------------------------------------")
     return cropped_image_name_list,og_bounding_of_cropped_dict

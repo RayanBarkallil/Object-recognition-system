@@ -5,7 +5,7 @@ import collections
 import keras
 from TextToSpeech import initialiseSounds
 
-
+#app initialization
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "superdupersecretkey"
 UPLOAD_FOLDER = 'static/images'
@@ -35,21 +35,16 @@ def doThings():
     #info dictionary for template filling ------------------------------------------------------------------
     croppedImageList_andLabels = collections.OrderedDict()
     for i in range(len(cropped_img_name_list)) :
-        print(cropped_img_name_list[i]," et ",label_list[i])
         croppedImageList_andLabels[cropped_img_name_list[i]] = label_list[i]
-    print(croppedImageList_andLabels)
+
     #session to pass variables to other fun ----------------------------------------------------------------
     session['croppedImageList_andLabels'] = croppedImageList_andLabels
-
     session['image_name'] = defaultFilename
-
     return redirect(url_for('showPredictions')+"?q="+label_list[0])
 
 
 @app.route('/prediction',methods=['GET'])
 def showPredictions():
-    # od = collections.OrderedDict(sorted(session['croppedImageList_andLabels'].items()))
-    print(session['croppedImageList_andLabels'])
     return render_template("prediction.html",
                            baseImage = session['image_name'],
                            croppedImageList_andLabels = session['croppedImageList_andLabels'])
@@ -69,7 +64,7 @@ class ObjectDetectionAPI(Resource):
         image_path ="./static/images/" + defaultFilename
         imagefile.save(image_path)
         #do prediction -----------------------------------------------------------------------------------------
-        cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path,model)
+        cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path,model,api=True)
         return bounding_for_each_label
 
 
