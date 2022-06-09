@@ -69,7 +69,7 @@
                                     </div>
                                     {% set list1 = imageName.split('.') %}
                                     <audio id="{{loop.index}}" class="d-none" controls >
-                                        <source src="{{ url_for('static', filename='sounds/'+ list1[0] + '.mp3')}}" type="audio/mpeg">
+                                        <source src="{{ url_for('static', filename='sounds/'+ Label + '.mp3')}}" type="audio/mpeg">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </div>

@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, session,redirect, url_for,jso
 from flask_restful import Api, Resource
 from prediction import getPediction
 import collections
+import keras
+from TextToSpeech import initialiseSounds
 
 
 app = Flask(__name__)
@@ -9,6 +11,8 @@ app.config['SECRET_KEY'] = "superdupersecretkey"
 UPLOAD_FOLDER = 'static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+#load model
+model = keras.models.load_model("./myModel/final_save")
 
 @app.route('/',methods=['GET','POST'])
 def getIndex():
@@ -26,7 +30,7 @@ def doThings():
     imagefile.save(image_path)
 
     #do prediction -----------------------------------------------------------------------------------------
-    cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path)
+    cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path,model)
 
     #info dictionary for template filling ------------------------------------------------------------------
     croppedImageList_andLabels = collections.OrderedDict()
@@ -65,7 +69,7 @@ class ObjectDetectionAPI(Resource):
         image_path ="./static/images/" + defaultFilename
         imagefile.save(image_path)
         #do prediction -----------------------------------------------------------------------------------------
-        cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path)
+        cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path,model)
         return bounding_for_each_label
 
 
@@ -73,4 +77,5 @@ api.add_resource(ObjectDetectionAPI, "/api/detect")
 
 
 if __name__=="__main__":
+    initialiseSounds()
     app.run(host= '0.0.0.0',port=5000,debug=True)

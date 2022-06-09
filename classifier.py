@@ -20,7 +20,7 @@ def predictionFunction(prediction):
 
 
 
-def classifier(cropped_img_name_list,og_bounding_of_cropped_dict) :
+def classifier(cropped_img_name_list,og_bounding_of_cropped_dict,model = None) :
     print("[INFO] classifier input params : ")
     print("[INFO] - cropped_img_name_list :",cropped_img_name_list)
     print("[INFO] - og_bounding_of_cropped_dict :",og_bounding_of_cropped_dict)
@@ -41,7 +41,8 @@ def classifier(cropped_img_name_list,og_bounding_of_cropped_dict) :
         classifier_input_images.append(im)
     # Classifier:
     ### Load a classifie:-------------------------------------------------------------
-    model = keras.models.load_model("./myModel/final_save")
+    if model == None :
+        model = keras.models.load_model("./myModel/final_save")
     ### Classification:---------------------------------------------------------------
     prediction_list = []
     for img in classifier_input_images :
