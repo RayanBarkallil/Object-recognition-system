@@ -11,9 +11,8 @@ class Point:
         return sqrt(pow(X,2)+pow(Y,2))
 
 
-def eleminateRedondantRect(listOfRectangles,tolerancePixel,w_tolerance,h_tolerance): #todo eleminate redondant rectangles
+def eleminateRedondantRect(listOfRectangles,tolerancePixel,w_tolerance,h_tolerance):
     resultList = [listOfRectangles[0]]
-
     for (ex,ey,ew,eh) in listOfRectangles[1:] :
         centerOfMass = Point((ex+ew)/2,(ey+eh)/2)
         centerOfMassCondition = True
@@ -36,28 +35,24 @@ def eleminateRedondantRect(listOfRectangles,tolerancePixel,w_tolerance,h_toleran
     return resultList
 
 
-    return None
-
-
 
 
 def detect(image_path):
-    #charger l'image et la redemisentionner
-    img = cv2.imread(image_path)
-    img = cv2.resize(img, (1000,1000),interpolation = cv2.INTER_AREA)
+    #charger l'image et la redimentionner
+    img_og = cv2.imread(image_path)
+    H,W = img_og.shape[0],img_og.shape[1]
+    #scaling :
+    new_w = 1000
+    scale = float(new_w/W)
+    new_h = int(H*scale)
+    img = cv2.resize(img_og, (new_w,new_h),interpolation = cv2.INTER_AREA)
     # haar code :
-    #get labels :
-    classLabels = "beaver, dolphin, otter, seal, whale, aquarium fish, flatfish, ray, shark, trout, orchids, poppies, roses, sunflowers, tulips, bottles, bowls, cans, cups, plates, apples, mushrooms, oranges, pears, sweet peppers, clock, computer keyboard, lamp, telephone, television, bed, chair, couch, table, wardrobe, bee, beetle, butterfly, caterpillar, cockroach, bear, leopard, lion, tiger, wolf, bridge, castle, house, road, skyscraper, cloud, forest, mountain, plain, sea, camel, cattle, chimpanzee, elephant, kangaroo, fox, porcupine, possum, raccoon, skunk, crab, lobster, snail, spider, worm, baby, boy, girl, man, woman, crocodile, dinosaur, lizard, snake, turtle, hamster, mouse, rabbit, shrew, squirrel, maple, oak, palm, pine, willow, bicycle, bus, motorcycle, pickup truck, train, lawn-mower, rocket, streetcar, tank, tractor"
-    LABELS = classLabels.split(", ")
-    LABELS.sort()
-
     #get superlabels :
     SUPER_LABELS = ["aquatic mammals","fish","flowers","food containers","household electrical devices","fruit and vegetables","household furniture","large carnivores","insects","large man-made outdoor things","large natural outdoor scenes","medium-sized mammals","large omnivores and herbivores","non-insect invertebrates","reptiles","people","trees","small mammals","vehicles"]
     SUPER_LABELS.sort()
 
     #dictionnaire detecters :
     cascade_dic = {}
-    cropped_img_list = []
     for superclass in SUPER_LABELS :
         cascade_dic[superclass] = cv2.CascadeClassifier('haar/haar_cascades/'+superclass+'_cascade.xml')
     #RQ : le nom du detecteur doit obligatoirement suivre la nomeclature : superclass+'_cascade.xml'
@@ -65,7 +60,6 @@ def detect(image_path):
     #sauvegarder les coordonnées du rectangle:
     #make it grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
     #---------------------------------get rectangle coordinates--------------------------
     haar_list_outputs = []
     for superLabel in SUPER_LABELS :
@@ -91,43 +85,45 @@ def detect(image_path):
             big_list_of_rectangles.append((ex,ey,ew,eh))
 
     #elemination process
-    tolerance_pixel_value = 50
+    tolerance_pixel_value = 150
     w_tolerance = 50
     h_tolerance = 50
     final_rectangle_list = eleminateRedondantRect(big_list_of_rectangles,
                                                   tolerance_pixel_value,
                                                   w_tolerance,
                                                   h_tolerance)
+    #todo NMS
     #-------------------------------------------------------------------------------------
 
 
     #on coupe l'image selon le rectangle:
     #--------------------------------- cropping the images -------------------------------
-    # for cascade_output in haar_list_outputs :
-    #     for (ex,ey,ew,eh) in cascade_output:
-    #         #draw renctangles
-    # #         cv2.rectangle(img,(ex,ey),(ex+ew,ey+eh),(0,255,0),5)
-    #         #cropping
-    #         cropped_img = img[ey:ey+eh,ex:ex+ew]
-    #         cropped_img_list.append(cropped_img)
-
+    print("[INFO] final_rectangle_list after elemination process: ",final_rectangle_list)
+    base_image_path = "static/images/croppedImageDirectory/"
+    image_name_index = 1
+    og_bounding_of_cropped_dict = {}
+    cropped_image_name_list = []
     for (ex,ey,ew,eh) in final_rectangle_list :
         #cropping
         cropped_img = img[ey:ey+eh,ex:ex+ew]
-        cropped_img_list.append(cropped_img)
-    #-------------------------------------------------------------------------------------
-
-    #on les sauvegarde dans le images/croppedImageDirectory
-    #------------------------------- saving cropped images -------------------------------
-    image_name_list = []
-    image_index = 1
-    base_image_path = "static/images/croppedImageDirectory/"
-    for img in cropped_img_list :
-        image_name = str(image_index)+".jpg"
+        #bounding boxes rescale to OG
+        rescaled_x = int(ex/scale)
+        rescaled_y = int(ey/scale)
+        rescaled_w = int(ew/scale)
+        rescaled_h = int(eh/scale)
+        rescaled_to_OG_detection_dimension = (rescaled_x,rescaled_y,rescaled_w,rescaled_h)
+        print("[INFO] rescaled_to_OG_detection_dimension : ",rescaled_to_OG_detection_dimension)
+        #save the cropped image
+        image_name = str(image_name_index)+".jpg"
         image_path = base_image_path+image_name
-        cv2.imwrite(image_path,img)
-        image_name_list.append(image_name)
-        image_index +=1
+        cv2.imwrite(image_path,cropped_img)
+        cropped_image_name_list.append(image_name)
+        image_name_index += 1
+        #save to dic :
+        og_bounding_of_cropped_dict[image_name] = rescaled_to_OG_detection_dimension
+
+        # cropped_img_list.append(cropped_img)
+    print("[INFO] cropped_image_name_list : ",cropped_image_name_list)
+    print("[INFO] og_bounding_of_cropped_dict : ",og_bounding_of_cropped_dict)
     #-------------------------------------------------------------------------------------
-    print(image_name_list)
-    return image_name_list
+    return cropped_image_name_list,og_bounding_of_cropped_dict

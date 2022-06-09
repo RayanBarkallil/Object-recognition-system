@@ -10,12 +10,12 @@ UPLOAD_FOLDER = 'static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-@app.route('/',methods=['GET'])
+@app.route('/',methods=['GET','POST'])
 def getIndex():
     return render_template("index.html")
 
 
-@app.route("/",methods=['POST'])
+@app.route("/doProcess",methods=['POST'])
 def doThings():
     #save the image -----------------------------------------------------------------------------------------
     imagefile = request.files['imagefile']
@@ -26,7 +26,7 @@ def doThings():
     imagefile.save(image_path)
 
     #do prediction -----------------------------------------------------------------------------------------
-    cropped_img_name_list,label_list = getPediction(image_path)
+    cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path)
 
     #info dictionary for template filling ------------------------------------------------------------------
     croppedImageList_andLabels = collections.OrderedDict()
@@ -65,14 +65,8 @@ class ObjectDetectionAPI(Resource):
         image_path ="./static/images/" + defaultFilename
         imagefile.save(image_path)
         #do prediction -----------------------------------------------------------------------------------------
-        cropped_img_name_list,label_list = getPediction(image_path)
-        #info dictionary for template filling ------------------------------------------------------------------
-        croppedImageList_andLabels = {}
-        for i in range(len(cropped_img_name_list)) :
-            croppedImageList_andLabels[cropped_img_name_list[i]] = {
-                "label" : label_list[i] #todo add coordinates 3la kulla rectangle
-            }
-        return croppedImageList_andLabels
+        cropped_img_name_list,label_list,bounding_for_each_label = getPediction(image_path)
+        return bounding_for_each_label
 
 
 api.add_resource(ObjectDetectionAPI, "/api/detect")

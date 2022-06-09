@@ -20,7 +20,10 @@ def predictionFunction(prediction):
 
 
 
-def classifier(cropped_img_name_list) :
+def classifier(cropped_img_name_list,og_bounding_of_cropped_dict) :
+    print("[INFO] classifier input params : ")
+    print("[INFO] - cropped_img_name_list :",cropped_img_name_list)
+    print("[INFO] - og_bounding_of_cropped_dict :",og_bounding_of_cropped_dict)
     #read Images-----------------------------------------------------------------------
     base_image_path = "static/images/croppedImageDirectory/"
     cropped_img_list = []
@@ -39,16 +42,25 @@ def classifier(cropped_img_name_list) :
     # Classifier:
     ### Load a classifie:-------------------------------------------------------------
     model = keras.models.load_model("./myModel/final_save")
-    # model.summary()
     ### Classification:---------------------------------------------------------------
     prediction_list = []
     for img in classifier_input_images :
         prediction  = model.predict(img)
         prediction_list.append(prediction)
     label_list = []
-    for prediction in prediction_list:
+    bounding_for_each_label = {}
+    for i,prediction in enumerate(prediction_list):
         predicted_label = predictionFunction(prediction)
         label_list.append(predicted_label)
-    print(label_list)
-    return cropped_img_name_list,label_list
+        try :
+            bounding_for_each_label[predicted_label].append(
+                og_bounding_of_cropped_dict[cropped_img_name_list[i]]
+            )
+        except :
+            bounding_for_each_label[predicted_label] = []
+            bounding_for_each_label[predicted_label].append(
+                og_bounding_of_cropped_dict[cropped_img_name_list[i]]
+            )
+    print("[INFO] label_list: ",label_list)
+    return cropped_img_name_list,label_list,bounding_for_each_label
     #---------------------------------------------------------------------------------
